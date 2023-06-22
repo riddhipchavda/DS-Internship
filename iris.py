@@ -70,14 +70,16 @@ le=LabelEncoder()
 # df['Item_Weight'].fillna((df['Item_Weight'].mean()/.median()/.mode()), inplace=True)
 # df['outlet_Size'].fillna(('Medium'), inplace=True)
 
-print(df.isnull().sum())
-print(df.notnull().sum())
-print(df.isnull())
+#iriscopy.py with changed dataset to have null values
+df2 = pd.read_csv("C:/Users/admin/Desktop/pp11dataset/iris2.csv")
+print(df2.isnull().sum())
+print(df2.notnull().sum())
+print(df2.isnull())
 
-df['PetalWidthCm'].fillna((df['PetalWidthCm'].mean()), inplace=True)
-print(df)
+df2['PetalWidthCm'].fillna((df2['PetalWidthCm'].mean()), inplace=True)
+print(df2)
 
-print(df.isnull().sum())
+print(df2.isnull().sum())
 
 print(Counter(y))
 from imblearn.over_sampling import RandomOverSampler
@@ -85,7 +87,7 @@ ros = RandomOverSampler(random_state=0)
 x, y = ros.fit_resample(x, y)
 print(Counter(y))
 
-print(df)
+print(df2)
 
 print(Counter(y))
 from imblearn.over_sampling import SMOTE
@@ -108,9 +110,9 @@ plt.show()
 
 #dealing w outliers using iqr
 
-print(df['SepalLengthCm'])
-Q1 = df['SepalLengthCm'].quantile(0.25)
-Q3 = df['SepalLengthCm'].quantile(0.75)
+print(df2['SepalLengthCm'])
+Q1 = df2['SepalLengthCm'].quantile(0.25)
+Q3 = df2['SepalLengthCm'].quantile(0.75)
 
 IQR = Q3 - Q1
 print(IQR)
@@ -121,13 +123,13 @@ lower = Q1 - 1.5*IQR
 print(upper)
 print(lower)
 
-out1=df[df['SepalLengthCm']<lower].values
-out2=df[df['SepalLengthCm']>upper].values
+out1=df2[df2['SepalLengthCm']<lower].values
+out2=df2[df2['SepalLengthCm']>upper].values
 
-df['SepalLengthCm'].replace(out1,lower,inplace=True)
-df['SepalLengthCm'].replace(out2,upper,inplace=True)
+df2['SepalLengthCm'].replace(out1,lower,inplace=True)
+df2['SepalLengthCm'].replace(out2,upper,inplace=True)
 
-print(df['SepalLengthCm'])
+print(df2['SepalLengthCm'])
 
 # training dataset
 # 80-20
@@ -142,9 +144,9 @@ from sklearn.metrics import accuracy_score
 logr=LogisticRegression()
 pca=PCA(n_components=2)
 
-x= df.drop('Id', axis=1)
+x= df2.drop('Id', axis=1)
 x= x.drop('Species', axis=1)
-y= df['Species']
+y= df2['Species']
 
 pca.fit(x)
 x=pca.transform(x)
